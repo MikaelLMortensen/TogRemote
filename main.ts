@@ -109,16 +109,25 @@ pins.setEvents(DigitalPin.P8, PinEventType.Edge)
 let oldPin1 = 0
 let oldPin2 = 0
 
+let limit = 2
+
+function testLimit(oldVal: number, newVal: number) : boolean {
+    if (newVal > oldVal + limit || newVal < oldVal - limit) {
+        return true
+    }
+    return false
+}
+
 basic.forever(function () {
 
     let pin1 =  Math.floor(pins.analogReadPin(AnalogPin.P1) / 11)
-    if (oldPin1 != pin1) {
+    if (testLimit(oldPin1,pin1)) {
         transmitVal("s1", pin1)
         oldPin1 = pin1
     }
 
     let pin2 = Math.floor(pins.analogReadPin(AnalogPin.P2) / 11)
-    if (oldPin2 != pin2) {
+    if (testLimit(oldPin2, pin2)) {
         transmitVal("s2", pin2)
         oldPin2 = pin2
     }
