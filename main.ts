@@ -57,7 +57,7 @@ input.onButtonPressed(Button.B, function () {
 })
 
 input.onButtonPressed(Button.AB, function () {
-    transmit("C")
+    transmit("AB")
 })
 
 let p3 = false;
@@ -120,16 +120,29 @@ function testLimit(oldVal: number, newVal: number) : boolean {
 
 basic.forever(function () {
 
-    let pin1 =  Math.floor(pins.analogReadPin(AnalogPin.P1) / 11)
+    let pin1 =  Math.floor(pins.analogReadPin(AnalogPin.P1) / 10)
+    if (pin1 > 100) {
+        pin1 = 100
+    }
+    if (pin1 <=5) {
+        pin1 = 0
+    }
+
     if (testLimit(oldPin1,pin1)) {
-        transmitVal("s1", pin1)
+        transmitVal("s2", pin1)
         oldPin1 = pin1
     }
 
-    let pin2 = Math.floor(pins.analogReadPin(AnalogPin.P2) / 11)
-    if (testLimit(oldPin2, pin2)) {
-        transmitVal("s2", pin2)
-        oldPin2 = pin2
+    let pin2 = Math.floor(pins.analogReadPin(AnalogPin.P2) / 10)
+    if (pin2 > 100) {
+        pin2 = 100
+    }    
+    if (pin2 <= 5) {
+        pin2 = 0
     }
 
+    if (testLimit(oldPin2, pin2)) {
+        transmitVal("s1", pin2)
+        oldPin2 = pin2
+    }
 });
